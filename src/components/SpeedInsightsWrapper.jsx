@@ -11,7 +11,7 @@ const SpeedInsightsWrapper = () => {
           setSpeedInsights(() => module.SpeedInsights);
         })
         .catch((error) => {
-          console.log('SpeedInsights not available:', error);
+          console.log('choom, your analytica got flatlined. look out of BS, ', error);
         });
     }
   }, []);
