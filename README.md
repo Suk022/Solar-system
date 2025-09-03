@@ -117,11 +117,8 @@ npm run deploy       # Deploy to GitHub Pages
 
 ## Contributing🫶
 
-This project started as a **hackathon project** and is still pretty basic.  
-I’d love to keep improving it and make it more **immersive, fun, and educational**.  
-
-Contributions of **any kind** are welcome — from fixing bugs and improving the UI,  
-to adding new space facts, features, or even just sharing ideas. 
+This project started as a **hackathon project** and is still pretty basic. I’d love to keep improving it and make it more **immersive, fun, and educational**.  
+Contributions of **any kind** are welcome, from fixing bugs and improving the UI, to adding new space facts, features, or even just sharing ideas. 
 
 ### How to Contribute
 1. **Fork** this repository  
