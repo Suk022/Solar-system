@@ -1,0 +1,1 @@
+This directory will contain planet textures or images for the 3D solar system project. 
