@@ -1,6 +1,6 @@
 ## Solar System Visualisation 
 
-I built this project as part of a hackathon, an immersive, interactive **3D web application** that brings the solar system to life through modern web technologies. 
+I built this project as part of a [Hackathon](https://devpost.com/software/interactive-solar-system), an immersive, interactive **3D web application** that brings the solar system to life through modern web technologies. 
 Users can **explore planets**, view **real-time NASA data**, and experience space through an **engaging educational interface**.  
 
 ## Features
