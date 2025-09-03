@@ -16,7 +16,6 @@ export default defineConfig({
       },
     },
   },
-  assetsInclude: ['**/*.glb'],
   build: {
     assetsInlineLimit: 0,
   },

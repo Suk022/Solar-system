@@ -31,11 +31,4 @@ ehthumbs.db
 
 # Temporary files
 *.tmp
-*.temp
-
-# 3D model files (large files)
-*.glb
-*.gltf
-*.fbx
-*.obj
-*.dae 
+*.temp 

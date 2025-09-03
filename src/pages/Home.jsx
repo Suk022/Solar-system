@@ -5,7 +5,7 @@ import HelpButton from "../components/HelpButton";
 import ApodViewer from "../components/ApodViewer";
 import AsteroidTracker from "../components/AsteroidTracker";
 import RandomSpaceFact from "../components/RandomSpaceFact";
-import SolarSystemStats from "../components/SolarSystemStats";
+
 import MoreMenu from '../components/MoreMenu';
 import '../styles.css';
 
@@ -47,10 +47,6 @@ const Home = () => {
 
   const handleOpenMoreMenu = () => setIsMoreMenuOpen(true);
   const handleCloseMoreMenu = () => setIsMoreMenuOpen(false);
-  const handleViewMore = (section) => {
-    // Placeholder: could open a full list modal for the section
-    alert('View more: ' + section);
-  };
 
   // Zoom and fullscreen handlers
   const handleZoomIn = () => {
@@ -86,10 +82,7 @@ const Home = () => {
         isOpen={isSidebarOpen} 
         onClose={handleCloseSidebar}
       />
-      <SolarSystemStats 
-        isSidebarOpen={isSidebarOpen} 
-        isAnyInfoComponentOpen={isAnyInfoComponentOpen}
-      />
+
       <HelpButton />
       <div className="info-buttons-row">
         <AsteroidTracker 
@@ -115,7 +108,7 @@ const Home = () => {
           <button className="toolbar-btn" onClick={handleFullscreen} title="Fullscreen">⛶</button>
         </div>
       )}
-      <MoreMenu open={isMoreMenuOpen} onClose={handleCloseMoreMenu} onViewMore={handleViewMore} />
+      <MoreMenu open={isMoreMenuOpen} onClose={handleCloseMoreMenu} />
     </div>
   );
 };

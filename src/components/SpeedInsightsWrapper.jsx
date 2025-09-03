@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const SpeedInsightsWrapper = () => {
-  // Only render SpeedInsights in production
-  if (import.meta.env.PROD) {
-    try {
-      const { SpeedInsights } = require('@vercel/speed-insights/vite');
-      return <SpeedInsights />;
-    } catch (error) {
-      console.log('Choom, your analytica got flatlined :(');
-      return null;3
+  const [SpeedInsights, setSpeedInsights] = useState(null);
+
+  useEffect(() => {
+    // Only load SpeedInsights in production
+    if (import.meta.env.PROD) {
+      import('@vercel/speed-insights/react')
+        .then((module) => {
+          setSpeedInsights(() => module.SpeedInsights);
+        })
+        .catch((error) => {
+          console.log('SpeedInsights not available:', error);
+        });
     }
-  }
-  return null;
+  }, []);
+
+  // Only render if SpeedInsights is loaded
+  if (!SpeedInsights) return null;
+  
+  return <SpeedInsights />;
 };
 
 export default SpeedInsightsWrapper; 
