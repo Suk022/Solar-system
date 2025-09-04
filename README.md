@@ -6,7 +6,7 @@ Users can **explore planets**, view **real-time NASA data**, and experience spac
 ## Features
 
 ### Immersive 3D Solar System
-- **Realistic Planet Models**: High-quality GLB models with accurate proportions and textures  
+- **Realistic Planet Models**: Main solar system uses simple spheres with textures (much lighter and faster)
 - **Dynamic Orbital Motion**: Planets orbit the Sun with realistic speeds and distances  
 - **Interactive Camera Controls**: Smooth NASA-style pan, zoom, and rotation  
 - **Dedicated Sidebar**: Click planets to view detailed information, hover for quick facts  
