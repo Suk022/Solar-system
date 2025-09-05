@@ -81,8 +81,7 @@ npm run deploy       # Deploy to GitHub Pages
 
 ### Award-Winning Project
 - **3rd Place at AstroHack 2025 (Devpost)** :shipit:
-- Recognised for exceptional execution and creative innovation  
-- Demonstrates real-world impact in **space education and visualization**  
+- Recognised for execution and creative innovation
 
 ### Technical Excellence
 - **Modern Architecture** – Built with the latest React and Three.js patterns  
