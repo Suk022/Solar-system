@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ModalPortal from "./ModalPortal";
-import asteroidLogo from "../assets/event/Asteorid.png";
+import asteroidLogo from "../../assets/event/Asteorid.png";
 
 const trackerButtonStyle = {
   background: "rgba(40, 37, 37, 0.1)",

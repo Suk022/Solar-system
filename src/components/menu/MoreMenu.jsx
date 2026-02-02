@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ModalPortal from "./ModalPortal";
+import ModalPortal from "../features/ModalPortal";
 import SpaceNews from "./SpaceNews";
 
 const modalOverlayStyle = {

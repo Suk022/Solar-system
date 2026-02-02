@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ModalPortal from "./ModalPortal";
-import apodLogo from "../assets/event/APOD.png";
+import randomLogo from "../../assets/event/Random.png";
 
-const getApodButtonStyle = (isSidebarOpen) => ({
+const factButtonStyle = {
   background: "rgba(40, 37, 37, 0.1)",
   border: "1px solid rgba(255, 255, 255, 0.2)",
   color: "#fff",
-  padding: "0.6rem 1.5rem",
+  padding: "0.5rem 1.5rem",
   borderRadius: "20px",
   cursor: "pointer",
   fontFamily: "'Arial', sans-serif",
@@ -17,10 +17,8 @@ const getApodButtonStyle = (isSidebarOpen) => ({
   backdropFilter: "blur(5px)",
   width: "100%",
   textAlign: "center",
-  opacity: isSidebarOpen ? 0 : 1,
-  visibility: isSidebarOpen ? "hidden" : "visible",
-  pointerEvents: isSidebarOpen ? "none" : "auto",
-});
+  marginBottom: "0.5rem",
+};
 
 const modalOverlayStyle = {
   position: "fixed",
@@ -61,33 +59,49 @@ const closeButtonStyle = {
 
 const mediaStyle = {
   width: "100%",
-  maxHeight: "500px",
+  maxHeight: "400px",
   objectFit: "contain",
   borderRadius: "8px",
   marginBottom: "1rem",
 };
 
-const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
+const RandomSpaceFact = ({
+  isSidebarOpen,
+  onOpen,
+  onClose: onCloseCallback,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [apodData, setApodData] = useState(null);
+  const [fact, setFact] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   const API_KEY = import.meta.env.VITE_NASA_API_KEY || "DEMO_KEY";
-  const API_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
+  const aToZ = "abcdefghijklmnopqrstuvwxyz";
+  const randomCharacter = aToZ[Math.floor(Math.random() * aToZ.length)];
 
-  const fetchApod = async () => {
-    if (apodData) return; // Don't re-fetch if data is already loaded
+  const fetchFact = async () => {
     setLoading(true);
     try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Failed to fetch APOD data");
+      const response = await fetch(
+        `https://images-api.nasa.gov/search?q=${randomCharacter}&media_type=image`,
+      );
+      if (!response.ok) throw new Error("Failed to fetch data");
       const data = await response.json();
-      setApodData(data);
+      const items = data.collection.items;
+      if (items.length > 0) {
+        const randomItem = items[Math.floor(Math.random() * items.length)];
+        setFact({
+          title: randomItem.data[0].title,
+          explanation: randomItem.data[0].description,
+          url: randomItem.links[0].href,
+        });
+      } else {
+        throw new Error("No items found");
+      }
     } catch (error) {
-      console.error("Error fetching APOD:", error);
-      setApodData(null); // Clear previous data on error
+      console.error("Error fetching random fact:", error);
+      setFact(null);
     } finally {
       setLoading(false);
     }
@@ -97,7 +111,7 @@ const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
     setIsOpen(true);
     setHasOpened(true);
     onOpen && onOpen();
-    fetchApod();
+    fetchFact();
   };
 
   const handleClose = () => {
@@ -105,27 +119,27 @@ const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
     onCloseCallback && onCloseCallback();
   };
 
+  const containerStyle = {
+    opacity: isSidebarOpen ? 0 : 1,
+    visibility: isSidebarOpen ? "hidden" : "visible",
+    transition: "all 0.3s ease",
+    pointerEvents: isSidebarOpen ? "none" : "auto",
+    position: "relative",
+  };
+
   return (
-    <div
-      style={{
-        opacity: isSidebarOpen ? 0 : 1,
-        visibility: isSidebarOpen ? "hidden" : "visible",
-        transition: "all 0.3s ease",
-        pointerEvents: isSidebarOpen ? "none" : "auto",
-        position: "relative",
-      }}
-    >
+    <div style={containerStyle}>
       <button
-        style={getApodButtonStyle(isSidebarOpen)}
+        style={factButtonStyle}
         onClick={handleOpen}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        title="Click to view today's APOD from NASA"
+        title="Get a random space fact"
       >
-        APOD (ASTRONOMY PICTURE OF THE DAY)
+        RANDOM SPACE FACT
         <img
-          src={apodLogo}
-          alt="APOD Logo"
+          src={randomLogo}
+          alt="Random Fact Logo"
           style={{
             position: "absolute",
             top: isHovered ? "-60px" : "-18px",
@@ -149,37 +163,18 @@ const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
               <button style={closeButtonStyle} onClick={handleClose}>
                 ×
               </button>
-              {loading && <p>Loading APOD...</p>}
-              {!loading && apodData && (
+              <h2 style={{ marginBottom: "1rem" }}>Random Space Fact</h2>
+              {loading && <p>Searching the cosmos for a fact...</p>}
+              {!loading && fact ? (
                 <>
-                  <h2 style={{ marginBottom: "0.5rem" }}>
-                    Astronomy Picture of the Day
-                  </h2>
-                  <h3 style={{ marginBottom: "1rem", color: "#4ecdc4" }}>
-                    {apodData.title}
+                  <h3 style={{ color: "#4ecdc4", marginBottom: "1rem" }}>
+                    {fact.title}
                   </h3>
-                  {apodData.media_type === "image" ? (
-                    <img
-                      src={apodData.hdurl || apodData.url}
-                      alt={apodData.title}
-                      style={mediaStyle}
-                    />
-                  ) : (
-                    <iframe
-                      src={apodData.url}
-                      title={apodData.title}
-                      frameBorder="0"
-                      allow="fullscreen"
-                      style={{ ...mediaStyle, height: "500px" }}
-                    ></iframe>
-                  )}
-                  <p style={{ lineHeight: "1.6" }}>{apodData.explanation}</p>
+                  <img src={fact.url} alt={fact.title} style={mediaStyle} />
+                  <p style={{ lineHeight: "1.6" }}>{fact.explanation}</p>
                 </>
-              )}
-              {!loading && !apodData && (
-                <p>
-                  Could not load the Picture of the Day. Please try again later.
-                </p>
+              ) : (
+                !loading && <p>Could not fetch a fact. Please try again.</p>
               )}
             </div>
           </div>
@@ -189,4 +184,4 @@ const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
   );
 };
 
-export default ApodViewer;
+export default RandomSpaceFact;
