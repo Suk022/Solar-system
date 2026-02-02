@@ -1,80 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import BaseNode from './BaseNode';
 import { fetchPlanetData } from '../api/nasa';
 
-const sidebarStyle = {
-  position: 'fixed',
-  right: 0,
-  top: 0,
-  bottom: 0,
-  width: '450px',
-  backgroundColor: 'rgba(18, 18, 19, 0.97)',
-  borderLeft: '1px solid #444',
-  padding: '2rem',
-  color: '#fff',
-  transform: 'translateX(100%)',
-  transition: 'transform 0.3s ease-in-out',
-  overflowY: 'auto',
-  zIndex: 1000,
-  backdropFilter: 'blur(10px)',
-};
-
-const openSidebarStyle = {
-  transform: 'translateX(0)',
-};
-
-const closeBtnStyle = {
-  position: 'absolute',
-  top: '1rem',
-  right: '1rem',
-  background: 'none',
-  border: 'none',
-  color: '#fff',
-  fontSize: '1.5rem',
-  cursor: 'pointer',
-  padding: '0.5rem',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '40px',
-  height: '40px',
-  borderRadius: '50%',
-  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-};
-
-const titleStyle = {
-  fontSize: '2.5rem',
-  marginBottom: '1rem',
-  background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  fontWeight: 'bold',
-};
-
-const topSectionStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '1rem',
-  marginBottom: '2rem',
-  padding: '1rem',
-  background: 'rgba(255, 255, 255, 0.05)',
-  borderRadius: '10px',
-};
-
-const modelContainerStyle = {
-  height: '200px',
-  background: 'rgba(0, 0, 0, 0.3)',
-  borderRadius: '8px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
-
-const imagesContainerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.5rem',
-};
-
+// Reusable styles
 const sectionStyle = {
   marginBottom: '2rem',
   padding: '1rem',
@@ -105,18 +33,6 @@ const metricStyle = {
   fontSize: '0.9rem',
 };
 
-const surfaceImageStyle = {
-  width: '100%',
-  height: '95px',
-  objectFit: 'cover',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  transition: 'transform 0.2s',
-  ':hover': {
-    transform: 'scale(1.05)'
-  }
-};
-
 const galleryGridStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
@@ -132,12 +48,6 @@ const galleryImageStyle = {
   transition: 'transform 0.2s',
 };
 
-const newsItemStyle = {
-  marginBottom: '1rem',
-  paddingBottom: '1rem',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-};
-
 const factImageStyle = {
   width: '100%',
   height: '200px',
@@ -146,7 +56,7 @@ const factImageStyle = {
   marginBottom: '1rem',
 };
 
-const Sidebar = ({ planet, isOpen, onClose }) => {
+const PlanetSidebar = ({ planet, isOpen, onClose }) => {
   const [nasaData, setNasaData] = useState({ gallery: [], fact: null });
   const [loading, setLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -164,7 +74,6 @@ const Sidebar = ({ planet, isOpen, onClose }) => {
     }
   }, [planet]);
 
-  // Function to truncate text to specified word limit
   const truncateText = (text, maxWords = 100) => {
     const words = text.split(' ');
     if (words.length <= maxWords) {
@@ -176,28 +85,18 @@ const Sidebar = ({ planet, isOpen, onClose }) => {
     };
   };
 
-  // Function to handle expand/collapse for featured fact
   const handleToggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // Function to handle expand/collapse for overview
   const handleToggleOverview = () => {
     setIsOverviewExpanded(!isOverviewExpanded);
   };
 
   if (!planet) return null;
 
-  const combinedStyle = {
-    ...sidebarStyle,
-    ...(isOpen ? openSidebarStyle : {}),
-  };
-
   return (
-    <div style={combinedStyle}>
-      <button style={closeBtnStyle} onClick={onClose}>×</button>
-      <h1 style={titleStyle}>{planet.name}</h1>
-
+    <BaseNode isOpen={isOpen} onClose={onClose} title={planet.name}>
       {/* Introduction */}
       <div style={sectionStyle}>
         <h2 style={sectionTitleStyle}>Overview</h2>
@@ -319,7 +218,9 @@ const Sidebar = ({ planet, isOpen, onClose }) => {
       {planet.culturalImpact && (
         <div style={sectionStyle}>
           <h2 style={sectionTitleStyle}>Cultural Impact</h2>
-          <p><strong>Mythology:</strong> {planet.culturalImpact.mythology}</p>
+          {planet.culturalImpact.mythology && (
+            <p><strong>Mythology:</strong> {planet.culturalImpact.mythology}</p>
+          )}
           {planet.culturalImpact.inMedia && (
             <p><strong>In Media:</strong> {planet.culturalImpact.inMedia.join(', ')}</p>
           )}
@@ -370,8 +271,8 @@ const Sidebar = ({ planet, isOpen, onClose }) => {
           )
         )}
       </div>
-    </div>
+    </BaseNode>
   );
 };
 
-export default Sidebar; 
+export default PlanetSidebar;
