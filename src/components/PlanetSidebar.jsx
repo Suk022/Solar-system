@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BaseNode from "./BaseNode";
+import BaseSidebar from "./BaseSidebar";
 import { fetchPlanetData } from "../api/nasa";
 
 // Reusable styles
@@ -96,7 +96,7 @@ const PlanetSidebar = ({ planet, isOpen, onClose }) => {
   if (!planet) return null;
 
   return (
-    <BaseNode isOpen={isOpen} onClose={onClose} title={planet.name}>
+    <BaseSidebar isOpen={isOpen} onClose={onClose} title={planet.name}>
       {/* Introduction */}
       <div style={sectionStyle}>
         <h2 style={sectionTitleStyle}>Overview</h2>
@@ -329,7 +329,7 @@ const PlanetSidebar = ({ planet, isOpen, onClose }) => {
           </p>
         )}
       </div>
-    </BaseNode>
+    </BaseSidebar>
   );
 };
 

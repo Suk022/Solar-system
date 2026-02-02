@@ -1,8 +1,7 @@
-import React, { useRef } from "react";
+import { useRef} from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import { Html } from "@react-three/drei";
-import saturnRingTexture from "../assets/textures/saturn_ring_alpha.jpg";
 
 const labelStyle = {
   color: "#fff",
@@ -18,30 +17,31 @@ const labelStyle = {
   opacity: 0.9,
 };
 
-const Saturn = ({
+const BasePlanet = ({
   planet,
   onClick,
   onHover,
   onUnhover,
   isHoverable = true,
+  children = null,
+  geometryArgs = [planet.size, 128, 128],
+  materialProps = {},
+  orbitSpeedMultiplier = 0.3,
+  rotationSpeed = 0.005,
+  labelOffset = 2,
+  castShadow = true,
+  receiveShadow = true,
 }) => {
   const mesh = useRef();
-  const ringsRef = useRef();
-  const texture = useLoader(TextureLoader, planet.texture);
-  const ringsTexture = useLoader(TextureLoader, saturnRingTexture);
+  const texture = planet.texture
+    ? useLoader(TextureLoader, planet.texture)
+    : null;
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() * planet.orbitSpeed * 0.3;
+    const t = clock.getElapsedTime() * planet.orbitSpeed * orbitSpeedMultiplier;
     mesh.current.position.x = Math.cos(t) * planet.orbitRadius;
     mesh.current.position.z = Math.sin(t) * planet.orbitRadius;
-    mesh.current.rotation.y += 0.005;
-
-    // Update rings position to match Saturn
-    if (ringsRef.current) {
-      ringsRef.current.position.x = mesh.current.position.x;
-      ringsRef.current.position.z = mesh.current.position.z;
-      ringsRef.current.rotation.x = Math.PI / 2; // Make rings horizontal
-    }
+    mesh.current.rotation.y += rotationSpeed;
   });
 
   const handlePointerOver = () => {
@@ -56,20 +56,32 @@ const Saturn = ({
     }
   };
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick(planet);
+    }
+  };
+
   return (
     <group>
       <mesh
         ref={mesh}
-        onClick={() => onClick(planet)}
+        onClick={handleClick}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
-        castShadow
-        receiveShadow
+        castShadow={castShadow}
+        receiveShadow={receiveShadow}
       >
-        <sphereGeometry args={[planet.size, 128, 128]} />
-        <meshStandardMaterial map={texture} metalness={0.1} roughness={0.7} />
+        <sphereGeometry args={geometryArgs} />
+        <meshStandardMaterial
+          color={planet.color}
+          map={texture}
+          metalness={0.1}
+          roughness={0.7}
+          {...materialProps}
+        />
         <Html
-          position={[0, planet.size + 2, 0]}
+          position={[0, planet.size + labelOffset, 0]}
           center
           style={labelStyle}
           distanceFactor={15}
@@ -78,18 +90,9 @@ const Saturn = ({
           {planet.name}
         </Html>
       </mesh>
-      {/* Saturn's Rings */}
-      <mesh ref={ringsRef}>
-        <ringGeometry args={[planet.size * 1.2, planet.size * 1.8, 128]} />
-        <meshStandardMaterial
-          map={ringsTexture}
-          transparent={true}
-          opacity={0.8}
-          side={2}
-        />
-      </mesh>
+      {children}
     </group>
   );
 };
 
-export default Saturn;
+export default BasePlanet;

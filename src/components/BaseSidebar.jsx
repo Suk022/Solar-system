@@ -1,6 +1,4 @@
-import React from "react";
-
-const BaseNode = ({
+const BaseSidebar = ({
   isOpen,
   onClose,
   children,
@@ -78,4 +76,4 @@ const BaseNode = ({
   );
 };
 
-export default BaseNode;
+export default BaseSidebar;

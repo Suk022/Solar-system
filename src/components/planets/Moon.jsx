@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import { Html } from "@react-three/drei";
-import moonTexture from "../assets/textures/moon.jpg";
+import moonTexture from "../../assets/textures/moon.jpg";
 
 const labelStyle = {
   color: "#fff",

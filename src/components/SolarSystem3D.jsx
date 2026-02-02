@@ -1,14 +1,14 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, useTexture, Html } from "@react-three/drei";
-import Planet from "./Planet";
-import Saturn from "./Saturn";
+import Mercury from "./planets/Mercury";
+import Venus from "./planets/Venus";
+import Earth from "./planets/Earth";
+import Mars from "./planets/Mars";
+import Jupiter from "./planets/Jupiter";
+import Saturn from "./planets/Saturn";
+import Uranus from "./planets/Uranus";
+import Neptune from "./planets/Neptune";
 import PlanetOrbit from "./PlanetOrbit";
 import planets from "../data/planets";
 import sunTexture from "../assets/textures/sun.jpg";
@@ -199,7 +199,7 @@ const SolarSystem3D = forwardRef(({ onPlanetClick, isSidebarOpen }, ref) => {
         </div>
       )}
       <Canvas
-        camera={{ position: [0, 40, 80], fov: 60 }}
+        camera={{ position: [5, 15, 70], fov: 80 }}
         style={{ height: "100vh", background: "#000" }}
       >
         <ambientLight intensity={0.5} />
@@ -211,29 +211,31 @@ const SolarSystem3D = forwardRef(({ onPlanetClick, isSidebarOpen }, ref) => {
         {/* Planets */}
         {planets
           .filter((p) => p.name !== "Sun")
-          .map((planet, idx) => (
-            <React.Fragment key={planet.name}>
-              <PlanetOrbit radius={planet.orbitRadius} />
-              {planet.name === "Saturn" ? (
-                <Saturn
+          .map((planet) => {
+            const PlanetComponent = {
+              "Mercury": Mercury,
+              "Venus": Venus,
+              "Earth": Earth,
+              "Mars": Mars,
+              "Jupiter": Jupiter,
+              "Saturn": Saturn,
+              "Uranus": Uranus,
+              "Neptune": Neptune,
+            }[planet.name];
+
+            return (
+              <React.Fragment key={planet.name}>
+                <PlanetOrbit radius={planet.orbitRadius} />
+                <PlanetComponent
                   planet={planet}
                   onClick={onPlanetClick}
                   onHover={handlePlanetHover}
                   onUnhover={handlePlanetUnhover}
                   isHoverable={!isSidebarOpen}
                 />
-              ) : (
-                <Planet
-                  planet={planet}
-                  index={idx}
-                  onClick={onPlanetClick}
-                  onHover={handlePlanetHover}
-                  onUnhover={handlePlanetUnhover}
-                  isHoverable={!isSidebarOpen}
-                />
-              )}
-            </React.Fragment>
-          ))}
+              </React.Fragment>
+            );
+          })}
         <OrbitControls
           ref={controlsRef}
           enablePan={true}

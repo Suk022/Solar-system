@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
-import SolarSystem3D from "../components/SolarSystem3D";
-import PlanetSidebar from "../components/PlanetSidebar";
-import HelpButton from "../components/HelpButton";
-import ApodViewer from "../components/ApodViewer";
-import AsteroidTracker from "../components/AsteroidTracker";
-import RandomSpaceFact from "../components/RandomSpaceFact";
+import SolarSystem3D from "./components/SolarSystem3D";
+import PlanetSidebar from "./components/PlanetSidebar";
+import HelpButton from "./components/HelpButton";
+import ApodViewer from "./components/features/ApodViewer";
+import AsteroidTracker from "./components/features/AsteroidTracker";
+import RandomSpaceFact from "./components/features/RandomSpaceFact";
 
-import MoreMenu from '../components/MoreMenu';
-import '../styles.css';
+import MoreMenu from './components/menu/MoreMenu';
+import './styles.css';
 
 const infoButtonsContainerStyle = {
   position: 'fixed',
