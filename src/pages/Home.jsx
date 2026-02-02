@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import SolarSystem3D from "../components/SolarSystem3D";
-import Sidebar from "../components/Sidebar";
+import PlanetSidebar from "../components/PlanetSidebar";
 import HelpButton from "../components/HelpButton";
 import ApodViewer from "../components/ApodViewer";
 import AsteroidTracker from "../components/AsteroidTracker";
@@ -77,7 +77,7 @@ const Home = () => {
           isSidebarOpen={isSidebarOpen}
         />
       </div>
-      <Sidebar 
+      <PlanetSidebar 
         planet={selectedPlanet} 
         isOpen={isSidebarOpen} 
         onClose={handleCloseSidebar}
