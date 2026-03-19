@@ -103,21 +103,30 @@ const AsteroidTracker = ({
   const getTodayDate = () => new Date().toISOString().split("T")[0];
 
   const fetchAsteroids = async () => {
-    if (asteroids.length > 0) return;
-    setLoading(true);
+
     const today = getTodayDate();
+    const cacheKey = `asteroids_${today}`; //No manual TTL/timestamp check needed — the date itself is the expiry mechanism
+
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      setAsteroids(JSON.parse(cached));
+      return;
+    }
+
+    setLoading(true);
     try {
-      const response = await fetch(
-        `https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${today}&api_key=${API_KEY}`,
-      );
+      const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${today}&api_key=${API_KEY}`);
       if (!response.ok) throw new Error("Failed to fetch asteroid data");
       const data = await response.json();
-      setAsteroids(data.near_earth_objects[today] || []);
+      const result = data.near_earth_objects[today] || [];
+      setAsteroids(result);
+      localStorage.setItem(cacheKey, JSON.stringify(result)); // Cache today's data
     } catch (error) {
       console.error("Error fetching asteroids:", error);
     } finally {
       setLoading(false);
     }
+
   };
 
   const handleOpen = () => {
