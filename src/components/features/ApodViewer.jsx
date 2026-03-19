@@ -73,24 +73,48 @@ const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
   const [loading, setLoading] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [error, setError] = useState(null);
 
   const API_KEY = import.meta.env.VITE_NASA_API_KEY || "DEMO_KEY";
   const API_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
 
+  const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 hours
+
   const fetchApod = async () => {
-    if (apodData) return; // Don't re-fetch if data is already loaded
-    setLoading(true);
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Failed to fetch APOD data");
-      const data = await response.json();
-      setApodData(data);
-    } catch (error) {
-      console.error("Error fetching APOD:", error);
-      setApodData(null); // Clear previous data on error
-    } finally {
-      setLoading(false);
+    // check if we already have fresh data in localStorage
+    const cached = localStorage.getItem("apod_cache");
+
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      const isStillFresh = Date.now() - timestamp < COOLDOWN_MS;
+      if (isStillFresh) {
+        setApodData(data); // use cached data, no API call
+        return;
+      }
     }
+    
+    //no cache or expired, hit API
+    setLoading(true);
+    try{
+        const response = await fetch(API_URL);
+
+        if (response.status === 429){
+          setError("Too many request to NASA. Please try again later.");
+          return;
+        }
+
+        if(!response.ok) throw new Error("Failed to fetch APOD data");
+        
+        const data = await response.json();
+        setApodData(data);
+
+    //store in localStorage with current timestamp
+    localStorage.setItem("apod_cache", JSON.stringify({data, timestamp: Date.now()}));
+    } catch (err){
+        console.error("Error fetching APOD data:", err);
+      } finally {
+        setLoading(false);
+      }
   };
 
   const handleOpen = () => {
@@ -178,7 +202,7 @@ const ApodViewer = ({ isSidebarOpen, onOpen, onClose: onCloseCallback }) => {
               )}
               {!loading && !apodData && (
                 <p>
-                  Could not load the Picture of the Day. Please try again later.
+                  {error || "Could not load the Picture of the Day. Please try again later."}
                 </p>
               )}
             </div>
