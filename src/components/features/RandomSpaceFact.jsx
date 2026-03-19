@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalPortal from "./ModalPortal";
 import randomLogo from "../../assets/event/Random.png";
 
@@ -77,10 +77,28 @@ const RandomSpaceFact = ({
   const [isHovered, setIsHovered] = useState(false);
 
   const API_KEY = import.meta.env.VITE_NASA_API_KEY || "DEMO_KEY";
-  const aToZ = "abcdefghijklmnopqrstuvwxyz";
-  const randomCharacter = aToZ[Math.floor(Math.random() * aToZ.length)];
+
+  const [lastFetchTime, setLastFetchTime] = useState(null);
+  const [cooldownActive, setCooldownActive] = useState(false);
+  const COOLDOWN_MS = 10000; // 10 seconds
+
+  useEffect(() => {
+    if (!cooldownActive) return;
+    const timer = setTimeout(() => {
+      setCooldownActive(false);
+    }, COOLDOWN_MS);
+    return () => clearTimeout(timer);
+  }, [cooldownActive]);
 
   const fetchFact = async () => {
+    if (cooldownActive) return;
+
+    const aToZ = "abcdefghijklmnopqrstuvwxyz";
+    const randomCharacter = aToZ[Math.floor(Math.random() * aToZ.length)];
+
+    setCooldownActive(true);
+    setLoading(true);
+
     setLoading(true);
     try {
       const response = await fetch(
@@ -130,20 +148,57 @@ const RandomSpaceFact = ({
   return (
     <div style={containerStyle}>
       <button
-        style={factButtonStyle}
+        style={{
+          ...factButtonStyle,
+          position: "relative",
+          overflow: "visible",
+          cursor: cooldownActive ? "not-allowed" : "pointer",
+          opacity: cooldownActive ? 0.8 : 1,
+        }}
         onClick={handleOpen}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        title="Get a random space fact"
+        disabled={cooldownActive}
+        title={cooldownActive ? "Please wait..." : "Get a random space fact"}
       >
-        RANDOM SPACE FACT
+        {/* Cooldown fill animation — sits behind the text */}
+        {cooldownActive && (
+          <span
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              height: "100%",
+              width: "100%",
+              background: "rgba(184, 184, 184, 0.10)",
+              transformOrigin: "left",
+              animation: `fillCooldown ${COOLDOWN_MS}ms linear forwards`,
+            }}
+          />
+        )}
+
+        <span
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "inline-block",
+            fontSize: cooldownActive ? "0.50rem" : "0.7rem", // shrinks during cooldown
+            letterSpacing: cooldownActive ? "0.50em" : "0.1em", // spreads during cooldown
+            transition: cooldownActive
+              ? "none" // instant spread on cooldown start
+              : "font-size 0.6s ease, letter-spacing 0.6s ease", // smooth return at end
+          }}
+        >
+          {cooldownActive ? "RANDOM SPACE FACT" : "RANDOM SPACE FACT"}
+        </span>
+
         <img
           src={randomLogo}
           alt="Random Fact Logo"
           style={{
             position: "absolute",
             top: isHovered ? "-60px" : "-18px",
-            right: isHovered ? "-60px" : "-18px",
+            right: isHovered ? "-50px" : "-18px",
             width: "30px",
             height: "30px",
             borderRadius: "50%",
