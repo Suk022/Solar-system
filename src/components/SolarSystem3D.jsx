@@ -96,16 +96,9 @@ const Sun = ({ onClick }) => {
 
 const Background = () => {
   const texture = useTexture(starsTexture);
-  const backgroundRef = useRef();
-
-  useFrame(() => {
-    if (backgroundRef.current) {
-      backgroundRef.current.rotation.y += 0.0001;
-    }
-  });
 
   return (
-    <group ref={backgroundRef}>
+    <group>
       {/* Create a large sphere with the texture mapped inside-out */}
       <mesh>
         <sphereGeometry args={[500, 60, 40]} />
