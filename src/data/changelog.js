@@ -26,7 +26,7 @@ export const changelog = [
   {
     id: 5,
     description: "Added interactive changelog modal with periodic refresh animation to surface project improvements and feature history",
-    commitUrl: "",
+    commitUrl: "https://github.com/Suk022/Solar-system/commit/f8b51b46b29ac89117c0a5a48ed3659e5ddec5d7",
     date: "24 Mar"
   }
 ];
