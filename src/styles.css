@@ -197,6 +197,15 @@ body {
   color: #fafafa;
 }
 
+/* Toolbar button image */
+.toolbar-btn img {
+  filter: invert(1) brightness(0.6);
+}
+
+.toolbar-btn:hover img {
+  filter: invert(1) brightness(1);
+}
+
 .more-menu-btn {
   position: fixed;
   top: 0.4rem;
@@ -312,4 +321,45 @@ body {
   .more-menu-icon {
     font-size: 1.0rem;
   }
+}
+
+/* Changelog Modal Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Refresh Icon Spin Animation */
+@keyframes spin-once {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-hint {
+  animation: spin-once 0.6s linear infinite;
+}
+
+/* Changelog Modal Commit Connectors */
+.commit-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 4.5px; /* Align with bullet column */
+  padding: 0;
+  gap: 0;
+}
+
+.connector-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.connector-line {
+  width: 1px;
+  height: 24px;
+  background-color: #9ca3af;
+  flex-shrink: 0;
 } 

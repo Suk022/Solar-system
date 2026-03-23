@@ -1,29 +1,25 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import SolarSystem3D from "./components/SolarSystem3D";
 import PlanetSidebar from "./components/PlanetSidebar";
 import HelpButton from "./components/HelpButton";
 import ApodViewer from "./components/features/ApodViewer";
 import AsteroidTracker from "./components/features/AsteroidTracker";
 import RandomSpaceFact from "./components/features/RandomSpaceFact";
+import ChangelogModal from "./components/ChangelogModal";
+import RefreshIcon from "./assets/icon/refresh.png";
 
 import MoreMenu from './components/menu/MoreMenu';
 import './styles.css';
 
-const infoButtonsContainerStyle = {
-  position: 'fixed',
-  bottom: '1.5rem',
-  right: '1.5rem',
-  zIndex: 1001,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-end',
-};
+
 
 const Home = () => {
   const [selectedPlanet, setSelectedPlanet] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAnyInfoComponentOpen, setIsAnyInfoComponentOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+  const [isChangelogOpen, setIsChangelogOpen] = useState(false);
+  const [spinning, setSpinning] = useState(false);
   const solarSystem3DRef = useRef();
 
   const handlePlanetClick = (planet) => {
@@ -59,6 +55,16 @@ const Home = () => {
     const elem = document.querySelector('.solar-system-container');
     if (elem && elem.requestFullscreen) elem.requestFullscreen();
   };
+
+  // Periodic spin animation for refresh icon
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSpinning(true);
+      setTimeout(() => setSpinning(false), 5000);
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="home-container">
@@ -103,11 +109,20 @@ const Home = () => {
       </div>
       {!isSidebarOpen && (
         <div className="floating-toolbar">
+          <button className="toolbar-btn" onClick={() => setIsChangelogOpen(true)} title="What's New">
+            <img 
+              src={RefreshIcon} 
+              alt="Changelog" 
+              style={{width: "16px", height: "16px"}} 
+              className={spinning ? "spin-hint" : ""}
+            />
+          </button>
           <button className="toolbar-btn" onClick={handleZoomIn} title="Zoom In">+</button>
           <button className="toolbar-btn" onClick={handleZoomOut} title="Zoom Out">-</button>
           <button className="toolbar-btn" onClick={handleFullscreen} title="Fullscreen">⛶</button>
         </div>
       )}
+      <ChangelogModal isOpen={isChangelogOpen} onClose={() => setIsChangelogOpen(false)} />
       <MoreMenu open={isMoreMenuOpen} onClose={handleCloseMoreMenu} />
     </div>
   );
