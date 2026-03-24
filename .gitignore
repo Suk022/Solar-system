@@ -10,7 +10,7 @@ node_modules/
 .env
 .env.*
 *.local
-/changelog.json
+/data/changelog.js
 
 # logs
 npm-debug.log*
