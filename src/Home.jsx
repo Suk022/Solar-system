@@ -6,7 +6,7 @@ import MoreMenu from './components/menu/MoreMenu';
 import './styles.css';
 
 // Lazy load non-critical components
-const PlanetSidebar = lazy(() => import('./components/PlanetSidebar'));
+const PlanetSidebar = lazy(() => import('./components/Sidebar/PlanetSidebar'));
 const HelpButton = lazy(() => import('./components/HelpButton'));
 const ApodViewer = lazy(() => import('./components/features/ApodViewer'));
 const AsteroidTracker = lazy(() => import('./components/features/AsteroidTracker'));

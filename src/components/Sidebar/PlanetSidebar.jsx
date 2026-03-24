@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BaseSidebar from "./BaseSidebar";
-import { fetchPlanetData } from "../api/nasa";
+import { fetchPlanetData } from "../../api/nasa";
 
 // Reusable styles
 const sectionStyle = {
