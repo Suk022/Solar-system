@@ -2,6 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
+  
+  mode: 'production',
+  define: {
+    'process.env.NODE_ENV': '"production"'
+  },
+
   plugins: [react()],
   base: process.env.VITE_BASE_PATH || "/Solar-system",
   esbuild: {
@@ -16,13 +22,14 @@ export default defineConfig({
       },
     },
   },
+  
   build: {
     assetsInlineLimit: 0,
   },
+  
   server: {
     fs: {
       strict: false
     }
   }
 }) 
-

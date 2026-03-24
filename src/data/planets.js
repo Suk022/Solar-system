@@ -1,12 +1,12 @@
-import mercuryTexture from "../assets/textures/mercury.jpg";
-import venusTexture from "../assets/textures/venus.jpg";
-import earthTexture from "../assets/textures/earth.jpg";
-import marsTexture from "../assets/textures/mars.jpg";
-import jupiterTexture from "../assets/textures/jupiter.jpg";
-import saturnTexture from "../assets/textures/saturn.jpg";
-import uranusTexture from "../assets/textures/uranus.jpg";
-import neptuneTexture from "../assets/textures/neptune.jpg";
-import sunTexture from "../assets/textures/sun.jpg";
+import mercuryTexture from "../assets/textures/mercury.webp";
+import venusTexture from "../assets/textures/venus.webp";
+import earthTexture from "../assets/textures/earth.webp";
+import marsTexture from "../assets/textures/mars.webp";
+import jupiterTexture from "../assets/textures/jupiter.webp";
+import saturnTexture from "../assets/textures/saturn.webp";
+import uranusTexture from "../assets/textures/uranus.webp";
+import neptuneTexture from "../assets/textures/neptune.webp";
+import sunTexture from "../assets/textures/sun.webp";
 
 const planets = [
   {

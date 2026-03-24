@@ -1,17 +1,17 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, lazy, Suspense } from "react";
 import SolarSystem3D from "./components/SolarSystem3D";
-import PlanetSidebar from "./components/PlanetSidebar";
-import HelpButton from "./components/HelpButton";
-import ApodViewer from "./components/features/ApodViewer";
-import AsteroidTracker from "./components/features/AsteroidTracker";
-import RandomSpaceFact from "./components/features/RandomSpaceFact";
-import ChangelogModal from "./components/ChangelogModal";
 import RefreshIcon from "./assets/icon/refresh.png";
 
 import MoreMenu from './components/menu/MoreMenu';
 import './styles.css';
 
-
+// Lazy load non-critical components
+const PlanetSidebar = lazy(() => import('./components/PlanetSidebar'));
+const HelpButton = lazy(() => import('./components/HelpButton'));
+const ApodViewer = lazy(() => import('./components/features/ApodViewer'));
+const AsteroidTracker = lazy(() => import('./components/features/AsteroidTracker'));
+const RandomSpaceFact = lazy(() => import('./components/features/RandomSpaceFact'));
+const ChangelogModal = lazy(() => import('./components/ChangelogModal'));
 
 const Home = () => {
   const [selectedPlanet, setSelectedPlanet] = useState(null);
@@ -83,29 +83,40 @@ const Home = () => {
           isSidebarOpen={isSidebarOpen}
         />
       </div>
-      <PlanetSidebar 
-        planet={selectedPlanet} 
-        isOpen={isSidebarOpen} 
-        onClose={handleCloseSidebar}
-      />
+      <Suspense fallback={null}>
+        <PlanetSidebar 
+          planet={selectedPlanet} 
+          isOpen={isSidebarOpen} 
+          onClose={handleCloseSidebar}
+        />
+      </Suspense>
 
-      <HelpButton />
+      <Suspense fallback={null}>
+        <HelpButton />
+      </Suspense>
+      
       <div className="info-buttons-row">
-        <AsteroidTracker 
-          isSidebarOpen={isSidebarOpen} 
-          onOpen={handleInfoComponentOpen}
-          onClose={handleInfoComponentClose}
-        />
-        <ApodViewer 
-          isSidebarOpen={isSidebarOpen} 
-          onOpen={handleInfoComponentOpen}
-          onClose={handleInfoComponentClose}
-        />
-        <RandomSpaceFact 
-          isSidebarOpen={isSidebarOpen} 
-          onOpen={handleInfoComponentOpen}
-          onClose={handleInfoComponentClose}
-        />
+        <Suspense fallback={null}>
+          <AsteroidTracker 
+            isSidebarOpen={isSidebarOpen} 
+            onOpen={handleInfoComponentOpen}
+            onClose={handleInfoComponentClose}
+          />
+        </Suspense>
+        <Suspense fallback={null}>
+          <ApodViewer 
+            isSidebarOpen={isSidebarOpen} 
+            onOpen={handleInfoComponentOpen}
+            onClose={handleInfoComponentClose}
+          />
+        </Suspense>
+        <Suspense fallback={null}>
+          <RandomSpaceFact 
+            isSidebarOpen={isSidebarOpen} 
+            onOpen={handleInfoComponentOpen}
+            onClose={handleInfoComponentClose}
+          />
+        </Suspense>
       </div>
       {!isSidebarOpen && (
         <div className="floating-toolbar">
@@ -122,10 +133,14 @@ const Home = () => {
           <button className="toolbar-btn" onClick={handleFullscreen} title="Fullscreen">⛶</button>
         </div>
       )}
-      <ChangelogModal isOpen={isChangelogOpen} onClose={() => setIsChangelogOpen(false)} />
-      <MoreMenu open={isMoreMenuOpen} onClose={handleCloseMoreMenu} />
+      <Suspense fallback={null}>
+        <ChangelogModal isOpen={isChangelogOpen} onClose={() => setIsChangelogOpen(false)} />
+      </Suspense>
+      <Suspense fallback={null}>
+        <MoreMenu open={isMoreMenuOpen} onClose={handleCloseMoreMenu} />
+      </Suspense>
     </div>
   );
 };
 
-export default Home; 
+export default Home;

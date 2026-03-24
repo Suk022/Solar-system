@@ -11,8 +11,8 @@ import Uranus from "./planets/Uranus";
 import Neptune from "./planets/Neptune";
 import PlanetOrbit from "./PlanetOrbit";
 import planets from "../data/planets";
-import sunTexture from "../assets/textures/sun.jpg";
-import starsTexture from "../assets/textures/stars_milky_way.jpg";
+import sunTexture from "../assets/textures/sun.webp";
+import starsTexture from "../assets/textures/stars_milky_way.webp";
 
 const infoCardStyle = {
   position: "fixed",

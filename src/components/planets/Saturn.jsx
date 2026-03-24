@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import BasePlanet from "./BasePlanet";
-import saturnRingTexture from "../../assets/textures/saturn_ring_alpha.jpg";
+import saturnRingTexture from "../../assets/textures/saturn_ring_alpha.webp";
 
 const Saturn = (props) => {
   const ringsRef = useRef();
