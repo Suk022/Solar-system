@@ -13,7 +13,7 @@ export const changelog = [
   },
   {
     id: 3,
-    description: "Integrated localStorage caching with TTL management for NASA API responses to minimize redundant requests and avoid rate limiting",
+    description: "Implemented localStorage caching with TTL-based invalidation for NASA API responses to reduce redundant network calls and avoid rate limits",
     commitUrl: "https://github.com/Suk022/Solar-system/commit/fe55a68944fadc5533bffe0154d70487ec49a006",
     date: "19 Mar"
   },
@@ -28,5 +28,11 @@ export const changelog = [
     description: "Added interactive changelog modal with periodic refresh animation to surface project improvements and feature history",
     commitUrl: "https://github.com/Suk022/Solar-system/commit/f8b51b46b29ac89117c0a5a48ed3659e5ddec5d7",
     date: "24 Mar"
+  },
+  {
+  id: 6,
+  description: "Optimized frontend performance by converting planet textures to WebP (reducing asset size by ~95%) and implementing lazy loading for non-critical UI components to improve initial load time",
+  commitUrl: "https://github.com/Suk022/Solar-system/commit/5ade843818409d5f7edcac73bd1d80df8585e21d",
+  date: "24 Mar"
   }
 ];
