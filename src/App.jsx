@@ -1,19 +1,17 @@
-import { lazy, Suspense } from 'react';
 import Home from "./Home";
 
-const SpeedInsightsWrapper = lazy(() => import('./components/SpeedInsightsWrapper'));
-const Analytics = lazy(() => import('@vercel/analytics/react').then(module => ({ default: module.Analytics })));
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
-const App = () => (
-  <>
-    <Home />
-    <Suspense fallback={null}>
-      <SpeedInsightsWrapper />
-    </Suspense>
-    <Suspense fallback={null}>
-      <Analytics />
-    </Suspense>
-  </>
-);
+const App = () => {
+  return (
+    <>
+      <Home />
+      {import.meta.env.PROD && <SpeedInsights />}
+      {import.meta.env.PROD && <Analytics />}
+    </>
+  );
+};
+
 
 export default App; 
