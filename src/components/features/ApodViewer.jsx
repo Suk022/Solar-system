@@ -20,6 +20,7 @@ const getApodButtonStyle = (isSidebarOpen) => ({
   opacity: isSidebarOpen ? 0 : 1,
   visibility: isSidebarOpen ? "hidden" : "visible",
   pointerEvents: isSidebarOpen ? "none" : "auto",
+  marginBottom: "0.5rem", 
 });
 
 const modalOverlayStyle = {
